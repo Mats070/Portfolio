@@ -1,60 +1,23 @@
 # Portfolio
-Auswahl von Projekten
-1
-
-# Portfolio
-
-2
 
 Auswahl von Projekten
-
-3
-
-​
-
-4
 
 Projektinfos:
 
-5
-
-​
-
-6
-
 Taschenrechner:
 
-7
-
 Mein erstes kleines Projekt. Ich habe es in dieses Portfolio mit aufgenommen, um zu zeigen wie ich gestartet habe. Bei diesem Projekt handelt es sich um einen herkömmlichen Taschenrechner.
-
-8
-
 ​
-
-9
 
 TicTacToe mit Gegner:
 
-10
-
 Ein weiter Projekt, welches ich relativ am Anfang meiner "Laufbahn" geschrieben habe. Es handelt sich hierbei um das Spiel TicTacToe, wobei ich auch einen Gegner programmiert habe, welcher auf deine Züge antwortet. Der Computer kann hierbei nur in 2 Zugabfolgen besiegt werden.
 
-11
 
-​
-
-12
-
-Autoren App: 
-
-13
+Autoren App:
 
 Mein erstes Projekt mit einem Backend-Server. Dieses Projekt umfasst meine ersten Schritte mit dem Authentifizieren von Usern und dem Speichern von Daten in einer Datenbank. Aus heutiger Sicht ist der Code relativ "schlecht", da es viele Performance und Sicherheitslücken gibt. Auf das Design der Websites habe ich hier weniger geachtet, da es mir hier eher um den Prozess im Backend ging.
-
-14
-
-​Bei dieser App können User (Autoren) ihre Geschichten teilen und die von anderen lesen und kommentieren/liken. Auch eine Suchfunktion und die Möglichkeit Direktnachrichten zu senden ist eingebaut.
+Bei dieser App können User (Autoren) ihre Geschichten teilen und die von anderen lesen und kommentieren/liken. Auch eine Suchfunktion und die Möglichkeit Direktnachrichten zu senden ist eingebaut.
 
 Kalendar-App:
 Eine weiteres Projekt mit Backend-Servern. Hier können User sowohl ihre eigenen Termine und ToDos organisieren, als auch Teams bilden um mit mehreren Mitgliedern an Kalendern und Aufgaben zu arbeiten.
