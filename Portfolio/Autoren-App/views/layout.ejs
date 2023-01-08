@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoren-Hilfe</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/2a59950bb8.js" crossorigin="anonymous"></script>
+    <style>
+        #navbar{
+            position: fixed;
+            top: 0;
+            transition: 0.6s;
+            opacity: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: black;
+            z-index: 99;
+            height: 10vh;
+        }
+        #Links{
+            font-size: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            padding: 2%;
+        }
+        .container{
+            margin-top: 11vh;
+        }
+        html {
+            background-color: rgb(25, 25, 25);
+        }
+        body{
+            background-color: rgb(25, 25, 25);
+            color: seashell;
+            /*overflow: hidden;*/
+            scroll-behavior: smooth;
+            max-width: 100%;
+            
+        }
+        .Links2{
+            display: none;
+            font-size: 1rem;
+            justify-content: flex-end;
+            padding: 2%;
+        }
+
+        #search{
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 700px) {
+            #Links{
+                display: none;
+            }
+            .Links2{
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <h1><a href="/dashboard"  style="color: seashell; font-size: 1.5rem;">Die Autoren-Hilfe</a></h1>
+        <div id="Links" style="width: 40%;">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link"  href="/users/create" style="color: seashell;">Schreiben</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/chats/view" style="color: seashell;margin-right: 6%;">Chats</a>
+                </li>
+            <!-- <a href="/users/profile" style="color: seashell;">Profil</a> -->
+            <li class="nav-item dropdown">
+                <a href="/users/profile" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: seashell;">Profil</a>
+                <div class="dropdown-menu">
+                    <a href="/users/profile" class="dropdown-item">Mein Profil</a>
+                    <a href="/users/personalCollection" class="dropdown-item">Meine Geschichten</a>
+                    <a href="/users/settings" class="dropdown-item">Profil-Einstellungen</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/users/logout" class="dropdown-item">Logout</a>
+                </div>
+            </li>
+        </div>
+    </ul>
+    <div class="Links2">
+        <a href="/users/create" style="color: seashell; margin-right: 6%;">Schreiben</a>
+        <a href="/users/chats/view" style="margin-right: 6%; color: seashell;">Chats</a>
+        <a href="/users/profile" style="color: seashell; ">Profil</a>
+    </div>
+    </div>
+    <div class="container" id="container">
+        <%- body %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

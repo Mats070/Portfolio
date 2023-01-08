@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED-Profile</title>
+    <style>
+        html {
+            background-color: rgb(25, 25, 25);
+        }
+        body{
+            background-color: rgb(25, 25, 25);
+            color: seashell;
+            /*overflow: hidden;*/
+            scroll-behavior: smooth;
+            max-width: 100%;
+            
+        }
+        #Profile-Picture{
+            border: solid 2px white;
+            height: 100px;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+        }
+
+        .container2{
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            margin-right: 0px;
+            width: 100%;
+        }
+
+        .container{
+            max-width: 100%;
+            left: 0;
+            margin-left: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin-right: 0px;
+        }
+
+        #infos{
+            padding-right: auto;
+            padding-left: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border: dashed 2px white;
+        }
+
+        @media (max-width: 1000px) {
+            #infos{
+                border: none;
+            }
+        }
+
+        .container3{
+            margin-top: 100px;
+            margin-bottom: 100px;
+            padding-top: 0px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #buttons{
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #Admin-Button{
+            display: none;
+            background-color: blue;
+            margin-left: 6px;
+        }
+        .item{
+            padding: 1%;
+            border: solid 2px white;
+            max-width: 95%;
+            height: 80vh;
+            margin-top: 3%;
+            overflow-y: scroll;
+            -moz-hyphens: auto;
+            -o-hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+        #Grid{
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-top: 10px;">Profil</h1>
+    <div class="container2" id="container2">
+        <div id="Profile-Picture">
+            <i class="fas fa-user fa-4x" id="User-Picture"></i>
+        </div>
+    </div>
+    <div class="container3">
+        <div id="infos">
+            <p>Benutzername:  <%= name %></p>
+            <p>Registriert am:  <%= date %></p>
+        </div>
+
+        <div id="actions">
+            <button><a href="/users/<%= name %>/newChat">Nachricht</a></button>
+        </div>
+    </div>
+    <h4 style="text-align: center;">Veröffentlichte Geschichten: </h4>
+    <div id="Grid">
+        <%  ArticleList.forEach(article =>{%>
+           <div class="item">
+            <h1><%= article.title%></h1>
+            <main><em><%= article.summary %></em></main>
+            <a href="/history/<%= article._id%>">Ganze Geschichte lesen</a>
+           </div>
+        <%})%>
+    </div>
+
+    <script>
+        document.getElementById("container2").style.width = window.innerWidth;
+        var Rang = document.getElementById("rang").innerHTML;
+        console.log(Rang);
+        /*if (document.getElementById("rang").innerHTML == "Rang: Admin"){
+            document.getElementById("Admin-Button").style.display = "inline";
+            document.getElementById("Delete-Button").style.display = "none";
+
+        }*/
+
+        function confirmDelete(){
+            var check = confirm("Sind sie sich sicher, dass sie ihren Account löschen wollen? Ein gelöschter Account kann nicht wiederhergellt werden!")
+            console.log(check);
+            if (check == false){
+                location.href = "/users/profile"
+                //history.back();
+                console.log("Back")
+            };
+            
+            if (check == true){
+                location.href = "/users/delete";
+                console.log("Forward")
+            };
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection</title>
+    <style>
+        .PersonalArticle{
+            padding: 1%;
+            border: solid 2px white;
+            max-width: 95%;
+            height: auto;
+            margin-bottom: 3%;
+            overflow-y: scroll;
+            -moz-hyphens: auto;
+            -o-hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            transform: scaleY(-1);
+        }
+        #Collection{
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: 100%;
+            transform: scaleY(-1);
+        }
+        .button{
+           background-color: green;
+           margin-top: 2%;
+           color: seashell;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Meine gespeicherten Einträge</h1>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+    <div id="Collection">
+        <%articlesList.forEach(article => {%>
+            <div class="PersonalArticle">
+                <h1 style="text-align: center;"><%= article.title %></h1><br>
+                <em><%= article.summary %></em><br><br>
+                <main><%= article.content %></main>
+                <form action="/<%=article._id%>/publish" method="POST">
+                    <% if (article.Status == "private"){ %>
+                        <button class="btn btn-outline-success" style="margin-top: 1%;" onclick='style=" display: none;"'>Veröffentlichen</button>
+                    <% } else {%>
+                        <br><br><p style="color: green;">Wurde bereits veröffentlicht</p>
+                    <%}%>
+                </form> <br><br>
+                <button class="btn btn-outline-info" onclick="edit('<%= article._id%>')">Bearbeiten</button><button class="btn btn-outline-primary" onclick="confirmDelete('<%= article._id%>')" style="margin-left: 1%">Löschen</button>
+            </div>
+        <%})%>
+    </div>
+    <script>
+         function edit(id){
+             location.href = "/"+id+"/edit"
+         }
+
+         function confirmDelete(id){
+            console.log(id);
+            var check = confirm("Sind sie sich sicher, dass sie ihre  Geschichte löschen wollen? Eine gelöschte Geschichte kann nicht wiederhergellt werden!")
+            if (check == false){
+                location.href = "/users/personalCollection"
+                //history.back();
+                //console.log("Back")
+            };
+
+            if (check==true){
+                location.href= "/article/"+id+"/delete";
+            }
+
+        }
+    </script>
+</body>
+</html>

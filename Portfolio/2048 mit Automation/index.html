@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Punkte und Highscore -->
+        <div id="Scoreboard">
+            <strong style="font-size: 1.5rem;">Punkte: </strong><div class="score" id="score" style="font-size: 1.25rem;"></div>
+            <strong style="font-size: 1.5rem;">Highscore: </strong> <div class="Highscore" id="highscore"></div>
+        </div>
+        <div id="Automation">
+            <button id="StartAlgorithm">Start Algorithm</button>
+            <button id="pauseAlgorithm">Pause Algorithm</button>
+        </div>
+        <!-- Spielfeld Struktur -->
+            <div class="Spielfeld" id="Spielfeld">
+                <div class="cell" id="1" Feld></div>
+                <div class="cell" id="2" Feld></div>
+                <div class="cell" id="3" Feld></div>
+                <div class="cell" id="4" Feld></div>
+                <div class="cell" id="5" Feld></div>
+                <div class="cell" id="6" Feld></div>
+                <div class="cell" id="7" Feld></div>
+                <div class="cell" id="8" Feld></div>
+                <div class="cell" id="9" Feld></div>
+                <div class="cell" id="10" Feld></div>
+                <div class="cell" id="11" Feld></div>
+                <div class="cell" id="12" Feld></div>
+                <div class="cell" id="13" Feld></div>
+                <div class="cell" id="14" Feld></div>
+                <div class="cell" id="15" Feld></div>
+                <div class="cell" id="16" Feld></div>
+            </div>
+            <div class="loosing-message " id="loosing-message">
+                <div data-loosing-message-text>Keine weiteren Zug-Möglichkeiten</div>
+                <button id="restartButton">Restart</button>
+            </div>
+
+            <div id="Statistiken">
+                <details>
+                    <summary>Erhobene Statistiken</summary>
+                    <canvas id='Statistik' onscroll="pauseAlgorithm()"></canvas>
+                </details>
+            </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script>
+</body>
+</html>

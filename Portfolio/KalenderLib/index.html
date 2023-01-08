@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eigenes Kalendar Modul</title>
+    <link rel="stylesheet" href="lib/OrganizeeCalendar.css">
+</head>
+<body>
+    <div id="calendar2"></div>
+    <script src="lib/OrganizeeCalendar.js" defer></script>
+    <script type="module" defer>
+        const calendar = document.getElementById("calendar2");
+        renderCalendar(calendar.id, {
+            events: [{id: "abcdefgh", title: "Basketball Training" ,startDate: "2022/08/18", startTime: "00:00",  endDate: "2022/08/19", endTime: "00:00", backgroundColor: "#000000", textColor: "white", author: "Mats", type: "Free", location: null}, {id: "123456", title: "Test", startDate: "2022/08/01", startTime: "17:30", endDate: "2022/08/01", endTime: "18:30",backgroundColor: "#ff0000", textColor: "white", author: "Mats", type: "Work", location: null}, {id: "786948", title: "Overlapping", startDate: "2022/08/01", startTime: "19:15", endDate:"2022/08/01", endTime:"20:21", backgroundColor: "#ff0050", textColor: "white", author: "Mats", type: "Work", location: null},{id: "123456", title: "Test Event", startDate: "2022/08/03", startTime: "15:00", endDate: "2022/08/06", endTime: "12:00", backgroundColor: "#ff0000", textColor: "white", author: "Mats", type: "Work", location: null}, {id: "786948", title: "Overlapping Event", startDate: "2022/08/01", startTime: "12:00", endDate:"2022/08/04", endTime:"19:00", backgroundColor: "#ff0050", textColor: "white", author: "Mats", type: "Work", location: null}],
+            startSunday: false,
+            AddBtn: true,
+            View: "Week",
+            availableViews: ['Month', 'Week', '3-Days', 'Day', 'List'],
+            TimeDisplay: "EU",
+            overlays: {
+                DefaultAddOverlay: {
+                    onsubmit: function(){
+                        const Data = collectNewEventData();
+
+                        events.push(Data);
+                        init();
+                    }
+                },
+                DefaultShowEventsOverlay: {}
+            },
+            allowMobileMonthView: false,
+            useMobileWeekView: false,
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            max-width: 100%;
+        }
+        .CommentArea{
+            width: 100%;
+            margin-top: 2%;
+            background-color: rgb(16, 52, 65);
+        }
+        .Comment-Item{
+            background-color: lightskyblue;
+            margin-right: 3%;
+            margin-left: 3%;
+            margin-top: 1%;
+        }
+        .Flexbox {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .POSTComment{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% } %>
+    <h1 style="text-align: center;"><%= title %>(Admin-View)</h1> <br>
+    <em>von <a href="/profile/<%= author%>"><%=author%></a></em>
+    <main><%= content %></main>
+    <div style="margin-top: 20%;">
+    <em>Veröffentlichkeitsdatum: <%= date %></em><br>
+    <button class="btn btn-primary"><a href="/Admin/article/<%= article_id%>/delete" style="color: seashell;">Löschen</a></button><button class="btn btn-outline-success" style="margin-left: 1%;"><a href="/deReport/Article/<%= article_id %>" style="color: seashell;">Ist ok</a></button>
+        
+      
+    </div>
+    <div class="CommentArea" id="Comments">
+        <h2>Kommentare</h2>
+        <% if (commentList.length == 0){%>
+            <p><em>Noch keine Kommentare vorhanden</em></p>
+        <%}%>
+        <% commentList.forEach(comment =>{ %>
+            <div class="Comment-Item" id="<%=comment.id%>">
+                <div class="Flexbox">
+                    <a href="/profile/<%= comment.Cauthor %>">von <%= comment.Cauthor%></a>
+                    <% if (comment.reported == "true"){ %>
+                        <div>
+                            <button style="text-decoration: none; background-color: blanchedalmond; border-radius: 50%;" class="btn btn-primary"><a href="/Admin/comment/<%= comment._id %>/delete"><i class="fa-solid fa-trash-can">Löschen</i></a></button><button class="btn btn-outline-success" style="margin-left: 4px;"><a href="/deReport/Comment/<%= comment._id%>">Ist ok</a></button>
+                        </div>
+                    <%} %>
+                </div>
+                <p style="text-align: center; color: black;"><%= comment.CommentContent%></p>
+            </div>
+       <% }) %>
+    </div>
+ </div>
+ <script>
+ </script>
+</body>
+</html>

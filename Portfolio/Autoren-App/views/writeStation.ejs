@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Station</title>
+</head>
+<style>
+     html {
+            background-color: rgb(25, 25, 25);
+        }
+        body{
+            background-color: rgb(25, 25, 25);
+            color: seashell;
+            /*overflow: hidden;*/
+            scroll-behavior: smooth;
+            max-width: 100%;
+            
+        }
+        #summary{
+          width: 90%;
+          height: auto;
+        }
+        #content{
+          width: 90%;
+          height: 40vh;
+        }
+</style>
+<body>
+    <h1>Jetzt kreativ werden</h1>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+    <form action="/users/create" method="POST" id="Form">
+        <div class="form-group"id="Control1">
+            <p>Titel:</p>
+            <input 
+            width="100%"
+              type="text",
+              id="title",
+              name="title",
+              placeholder="Titel",
+              class="form-controll",
+              autocomplete="off",
+              value = "<%= typeof title != 'undefined' ? title : '' %>"
+            />
+        </div>
+        <div class="form-group">
+          <label for="genre">Genre: </label>
+          <select name="genre" id="genre">
+            <option value="keine Angabe"></option>
+            <option value="Action">Action</option>
+            <option value="Krimi">Krimi</option>
+            <option value="Romantik">Romantik</option>
+            <option value="Sci-Fi">Science-Fiction</option>
+            <option value="Komödie">Komödie</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Kinder">Kinderbuch</option>
+            <option value="Sachbuch">Sachbuch</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Andere">Andere</option>
+          </select>
+        </div>
+        <div class="form-group" id="Control2">
+            <p>Summary:</p>
+            <textarea
+              type="text",
+              id="summary",
+              name="summary",
+              placeholder="Summary...",
+              class="form-controll",
+              value = "<%= typeof summary != 'undefined' ? summary : '' %>"
+            ></textarea>
+        </div>
+        <div class="form-group"  id="Control3">
+            <p>Body der Geschichte:</p>
+            <textarea
+              id="content",
+              name="content",
+              class="form-controll",
+              placeholder="Inhalt",
+              value = "<%= typeof content != 'undefined' ? content : '' %>"
+            ></textarea>
+        </div>
+    <button type="submit"class="btn btn-primary btn-block" id="btn2"><a style="color: white;">Für dich speichern</a></button>
+    </form>
+</body>
+</html>

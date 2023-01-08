@@ -1,0 +1,141 @@
+#Spielfeld{
+    display: grid;
+    grid-template-columns: 15vh 15vh 15vh 15vh;
+    grid-template-rows: 15vh 15vh 15vh 15vh;
+    background-color: saddlebrown;
+    width: 60vh;
+    height: 60vh;
+    position: absolute;
+    top: 20vh;
+    left: 35%;
+}
+
+.cell{
+    background-color: grey;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(27, 27, 27);
+    font-size: 4rem;
+}
+
+.cell.Z2{
+    background-color: rgb(243, 233, 215);
+}
+
+.cell.Z4{
+    background-color: wheat;
+}
+
+.cell.Z8{
+    background-color: darkgoldenrod;
+    color: white;
+}
+
+.cell.Z16{
+    background-color: red;
+    color: white;
+}
+
+.cell.Z32{
+    background-color: brown;
+    color: white;
+}
+
+.cell.Z64{
+    background-color: orangered;
+    color: white;
+}
+
+.cell.Z128{
+    background-color: turquoise;
+    color: white;
+}
+
+.cell.Z256{
+    background-color: blue;
+    color: white;
+}
+
+.cell.Z512{
+    background-color: lightgreen;
+    color: white;
+}
+
+.cell.Z1024{
+    background-color: green;
+    color: white;
+    font-size: 3rem;
+}
+
+.cell.Z2048{
+    background-color: blueviolet;
+    color: white;
+    font-size: 3rem;
+}
+
+
+/* Restart Button samt Nachricht Stylen */
+.loosing-message{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(34, 29, 29, 0.9);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+.loosing-message button{
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    margin-top: 3rem;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+}
+
+.loosing-message button:hover{
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+.loosing-message.show {
+    display: flex;
+}
+
+#Automation{
+    display: flex;
+    justify-content: center;
+}
+
+#StartAlgorithm{
+    font-size: 1rem;
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 0.5em;
+}
+
+#pauseAlgorithm{
+    display:  none;
+    font-size: 1rem;
+    background-color: darkgoldenrod;
+    color: white;
+    border: none;
+    padding: 0.5em;
+}
+
+#Statistiken{
+    position: absolute;
+    top: 100%;
+    width: 95%; 
+    height: 95vh;
+}

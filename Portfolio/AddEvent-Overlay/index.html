@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddEvent-Overlay</title>
+    <style>
+        :root{
+            /* Globale CSS-Variablen*/
+            --calendar-background: rgb(20, 20, 20);
+            --calendar-color: white;
+        }
+
+        .organizee-calendar #calendarOverlay{
+            user-select: none;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0vh;
+            left: 0%;
+            z-index: 95;
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+            text-align: center;
+            overflow-y: hidden;
+        }
+
+        .organizee-calendar #calendarOverlay .CalendarOverlayCloseBtn {
+            position: absolute;
+            top: 0;
+            right: 2%;
+            font-size: 36px;
+            margin-left: 50px;
+            color: red;
+            text-decoration: none;
+        }
+
+        .organizee-calendar #calendarOverlay .CalendarOverlayCloseBtn:hover{
+           cursor: pointer;
+           color: orange;
+        }
+
+        .organizee-calendar #calendarOverlay .EventInfoInput{
+            margin-top: 1vh;
+            height: 2em;
+            width: 50%;
+        }
+
+        .organizee-calendar #calendarOverlay .addLocation p{
+            color: rgb(6, 143, 143);
+            user-select: none;
+            text-align: left;
+            padding-left: 25%;
+        }
+
+        .organizee-calendar #calendarOverlay .addLocation p:hover{
+            text-decoration: underline;
+            color: rgb(4, 200, 200);
+            cursor: pointer;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv{
+            margin-top: 5vh;
+            padding-left: 25%;
+            padding-right: 25%;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .all-day-slider{
+            display: flex;
+            font-weight: bolder;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .all-day-slider .dateHeading{
+            font-size: 1.2em;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv #AllDaySwitch{
+            display: flex;
+            align-items: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv #AllDaySwitch::before{
+            content: "All-Day: ";
+            padding-right: 10px;
+            font-weight: normal;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs{
+            margin-top: 3vh;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs div{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs div .OverlayDateTimeInputs{
+            background-color: var(--calendar-background);
+            border: none;
+            color: var(--calendar-color);
+            font-size: 1.2em;
+            border: 1px solid var(--calendar-color);
+            width: 8em;
+            text-align: center;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions{
+            margin-top: 5vh;
+            padding-left: 25%;
+            padding-right: 25%;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions span.OptionsHeading{
+            display: flex;
+            text-align: left;
+            font-weight: bolder;
+            font-size: 1.2em;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent{
+            margin-top: 2vh;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent span.add-scheduling-rule{
+            font-size: 0.9em;
+            user-select: none;
+            color: rgb(6, 143, 143);
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent span.add-scheduling-rule:hover{
+            text-decoration: underline;
+            cursor: pointer;
+            color: rgb(4, 200, 200);
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent select{
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+            border: 1px solid var(--calendar-color);
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent select option{
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor input[type="text"]{
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+            border: 1px solid var(--calendar-color);
+            height: 4vh;
+            width: 20px;
+            text-align: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor::before{
+            content: 'for';
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor select{
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+            border: 1px solid var(--calendar-color);
+            height: 4vh;
+            text-align: center;
+            margin-left: 10px;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatDOM{
+            display: flex;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatDOM span{
+            padding: 0px 4px;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType{
+            margin-top: 3vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .heading{
+            font-size: 1.2em;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType label{
+            font-size: 1.1em;
+        }
+
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .radiogroup{
+            display: flex;
+            justify-content: right;
+            width: 100%;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .radiogroup div{
+            padding-right: 3%;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddBGColor{
+            margin-top: 3vh;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .organizee-calendar #calendarOverlay #CalendarAddEventSubmitBtn{
+            margin-top: 6vh;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            background-color: var(--calendar-background);
+            color: var(--calendar-color);
+            border: solid 2px var(--calendar-color);
+            padding: 0.2em 1em;
+        }
+        /* Switches */
+         /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 21px;
+            width: 21px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(21px);
+            -ms-transform: translateX(21px);
+            transform: translateX(21px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        } 
+        
+
+        /* Responsive Design*/
+        @media (max-width: 750px){
+            /* Weniger Padding-Left und Padding-Right */
+            .organizee-calendar #calendarOverlay .EventInfoInput{
+                width: 90%;
+            }
+
+            .organizee-calendar #calendarOverlay .addLocation p{
+                padding-left: 5%;
+            }
+
+            .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv{
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .organizee-calendar #calendarOverlay #CalendarAddEventOptions{
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+            
+            .organizee-calendar #calendarOverlay #CalendarAddEventSubmitBtn{
+                margin-top: 3vh;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar" class="organizee-calendar" translate="no">
+        <div id="calendarOverlay">
+            <a href="javascript:void(0)" class="CalendarOverlayCloseBtn">&times;</a>
+            <h2>New Event</h2>
+            <input type="text" id="OverlayEventTitleInput" class="EventInfoInput" placeholder="Enter Titel" autocomplete="off">
+            <div id="CalendarDOMAddLocationDIV" class="addLocation">
+                <p onclick="CalendarOverlayshowLocationInput()">+ Add Location</p>
+            </div>
+            <div id="CalendarDOMAddTimeDiv">
+                <div class="all-day-slider">
+                    <span class="dateHeading">Date/Time: </span><div id="AllDaySwitch">
+                        <label class="switch">
+                            <input type="checkbox" id="CalendarAddTimeGanztag">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="CalendarstartEndInputs">
+                    <div><input type="date" id="OverlayEventStartDate" required="required" class="OverlayDateTimeInputs"><input type="time" required="required" id="OverlayEventStartTime" class="OverlayDateTimeInputs"></div><br>
+                    <div><input type="date" id="OverlayEventEndDate" required="required" class="OverlayDateTimeInputs"><input type="time" required="required" id="OverlayEventEndTime" class="OverlayDateTimeInputs"></div>
+                </div>
+            </div>
+            <div id="CalendarAddEventOptions">
+                <span class="OptionsHeading">Options:</span>
+                <div id="CalendarRepeatEventDIV" class="CalendarRepeatEvent">
+                    <span onclick="CalendarOverlayAddSchedulingRule()" class="add-scheduling-rule">+ Add Scheduling-Rule</span>
+                </div>
+                <div id="OverlayAddDescription">
+                    <textarea name="CalendarAddDescription" maxlength="500" Placeholder="Description (optional)" id="CalendarAddDescription" cols="30" rows="4" style="width: 100%; margin-top: 4vh; resize: none;"></textarea>
+                </div>
+                <div id="CalendarAddEventType">
+                    <span class="heading">Type: </span><span class="radiogroup"><div><input type="radio" name="Typeradio" id="Workradio"><label for="Workradio">Work</label></div><div><input type="radio" name="Typeradio" id="Freeradio"><label for="Freeradio">Free-Time</label></div><div><input type="radio" name="Typeradio" id="Otherradio"><label for="Otherradio">Other</label></div></span>
+                </div>
+                <div id="CalendarAddBGColor">
+                    <span class="heading">Background-Color</span><input type="color" id="CalendarAddBGColorInput">
+                </div>
+            </div>
+            <button id="CalendarAddEventSubmitBtn" onclick="collectNewEventData()">Save</button>
+        </div>
+    </div>
+
+    <script>
+        //Globale Variabeln
+        const OverlayEventTitleInput = document.getElementById('OverlayEventTitleInput');
+        const OverlayStartDateInput = document.getElementById('OverlayEventStartDate')
+        const OverlayStartTimeInput = document.getElementById("OverlayEventStartTime");
+        const OverlayEndTimeInput = document.getElementById("OverlayEventEndTime");
+        const OverlayEndDateInput = document.getElementById('OverlayEventEndDate');
+        const CalendarOverlayGanztagBtn = document.getElementById('CalendarAddTimeGanztag');
+        const OtherTypeRadio = document.getElementById('Otherradio');
+        const CalendarOverlayEventRepeatDIV = document.getElementById('CalendarRepeatEventDIV');
+        const CalendarOverlayDescriptionTextarea = document.getElementById('CalendarAddDescription');
+        const CalendarAddBGColorInput = document.getElementById('CalendarAddBGColorInput')
+
+        //AddEventListeners
+        window.addEventListener('load', initCalendarAddOverlay)
+        CalendarOverlayGanztagBtn.addEventListener('input', CalendarOverlayGanztag);
+
+        //Overlay-Funtions
+        function CalendarOverlayshowLocationInput() {
+                document.getElementById('CalendarDOMAddLocationDIV').innerHTML = '<input type="text" id="AddLocationInput" class="EventInfoInput" placeholder="Location (optional)" autocomplete="off">'
+        }
+        
+        function CalendarOverlayGanztag(){
+            //Ganztag an oder aus überprüfen
+            if(CalendarOverlayGanztagBtn.checked){
+                //Beide TimeInput-Felder nicht mehr anzeigen
+                setTimeout(function(){
+                    OverlayStartTimeInput.style.display = "none";
+                    OverlayEndTimeInput.style.display = "none";
+                    OverlayEndDateInput.value = OverlayStartDateInput.value;
+                }, 175)
+            }else{
+                //Beide TimeInput-Felder wieder anzeigen
+                setTimeout(function(){
+                    OverlayStartTimeInput.style.display = "inline";
+                    OverlayEndTimeInput.style.display = "inline";
+                },175)
+            }
+        };
+
+        function initCalendarAddOverlay(){
+            //init Calendar
+            OverlayEventTitleInput.value = "";
+            CalendarOverlayGanztagBtn.checked = false;
+            OtherTypeRadio.checked = true;
+            CalendarOverlayDescriptionTextarea.value = ""
+            
+            //Default Daten berechnen
+            let actualDate = new Date();
+
+            //Start: Nächste Stunde
+            actualDate.setHours(actualDate.getHours()+1);
+            let hours1 = actualDate.getHours();
+            if(hours1 < 10){
+                hours1 = "0"+hours1
+            }
+            const StartTime = hours1+":00";
+            OverlayStartTimeInput.value = StartTime;
+
+            let month1 = actualDate.getMonth();
+            if(month1 < 9){
+                month1 = "0"+(month1+1)
+            }else{
+                month1 = month1+1;
+            }
+
+            let date1 = actualDate.getDate();
+            if(date1 < 10){
+                date1 = "0"+date1;
+            }
+
+            const StartDate = actualDate.getFullYear()+"-"+month1+"-"+date1;
+            OverlayStartDateInput.value = StartDate;
+            OverlayStartDateInput.min = StartDate;
+            OverlayEndDateInput.min = StartDate;
+
+            //Ende: Nächste Stunde +1 
+            actualDate.setHours(actualDate.getHours()+1);
+            let hours2 = actualDate.getHours();
+            if(hours2 < 10){
+                hours2 = "0"+hours2
+            }
+            const EndTime = hours2+":00";
+            OverlayEndTimeInput.value = EndTime;
+
+            let month2 = actualDate.getMonth();
+            if(month2 < 9){
+                month2 = "0"+(month2+1)
+            }else{
+                month2 = month2+1;
+            }
+
+            let date2 = actualDate.getDate();
+            if(date2 < 10){
+                date2 = "0"+date2;
+            };
+
+            const EndDate = actualDate.getFullYear()+"-"+month2+"-"+date2;
+            OverlayEndDateInput.value = EndDate;
+
+
+        }
+
+        function CalendarOverlayAddSchedulingRule(){
+            CalendarOverlayEventRepeatDIV.innerHTML = "";
+
+            //Überschrift/Definition erstellen
+            const RepeatHeadingSpan = document.createElement('span');
+            RepeatHeadingSpan.innerText = "Repeat: ";
+
+            //DIV für Selects erstellen
+            const EventRepeatSelectDOM = document.createElement('div');
+            EventRepeatSelectDOM.id = 'CalendarEventRepeatDOM';
+
+            //Selects erstellen
+            const SelectRepeatType = document.createElement('select');
+            SelectRepeatType.id = 'CalendarEventRepeat';
+            SelectRepeatType.innerHTML = '<option value="Never">Never</option><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option><option value="Yearly">Yearly</option>';
+
+            const EventRepeatForDIV = document.createElement('div');
+            EventRepeatForDIV.id = 'CalendarEventRepeatFor';
+
+            //EventRepeatForDiv Content rendern 
+            const EventRepeatForNumberInput = document.createElement('input');
+            EventRepeatForNumberInput.id = 'CalendarEventRepeatDurationInput'
+            EventRepeatForNumberInput.type = "text";
+            EventRepeatForNumberInput.inputMode = "numeric";
+            EventRepeatForNumberInput.maxLength = 2;
+            EventRepeatForNumberInput.placeholder = "0"
+            EventRepeatForNumberInput.addEventListener('input', function(){
+                //Nur Werte zwischen 1-9 zulassen
+                let VALUE = document.getElementById('CalendarEventRepeatDurationInput').value;
+                if(VALUE.length == 1){
+                    VALUE = VALUE.replace(/[^1-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+                }else{
+                    VALUE = VALUE.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+                }
+               document.getElementById('CalendarEventRepeatDurationInput').value = VALUE;
+            });
+            EventRepeatForNumberInput.disabled = true;
+
+            const EventRepeatForTypeSelect = document.createElement('select');
+            EventRepeatForTypeSelect.id = "CalendarEventRepeatDurationType";
+            EventRepeatForTypeSelect.disabled = true;
+            EventRepeatForTypeSelect.innerHTML = '<option value="D">Day(s)</option><option value="W">Week(s)</option><option value="M">Month(s)></option><option value="Y">Year(s)</option>'
+
+            //Zu Div hinzufügen
+            EventRepeatForDIV.appendChild(EventRepeatForNumberInput);
+            EventRepeatForDIV.appendChild(EventRepeatForTypeSelect);
+            EventRepeatForDIV.style.opacity = "0.5";
+
+            SelectRepeatType.addEventListener('input', function(e){
+                const VALUE = e.target.value
+                if (VALUE == 'Never'){
+                    //Inputs wieder disablen, Opacity auf 0.5 und Placholder auf 0
+                    EventRepeatForTypeSelect.innerHTML = '<option value="D">Day(s)</option><option value="W">Week(s)</option><option value="M">Month(s)></option><option value="Y">Year(s)</option>'
+                    EventRepeatForDIV.style.opacity = "0.5";
+                    EventRepeatForTypeSelect.disabled = true;
+                    EventRepeatForNumberInput.disabled = true;
+                    EventRepeatForNumberInput.placeholder = "0";
+                    EventRepeatForNumberInput.value = "0";
+                }else{
+                    //
+                    EventRepeatForDIV.style.opacity = "1";
+                    EventRepeatForTypeSelect.disabled = false;
+                    EventRepeatForNumberInput.disabled = false;
+                    EventRepeatForNumberInput.placeholder = "1";
+
+                    //Auf den jeweiligen Style überprüfen und dementsprechend die Options rendern
+                    if(VALUE == 'Daily'){
+                        //Day(s), Week(s)
+                        EventRepeatForTypeSelect.innerHTML = '<option value="D">Day(s)</option><option value="W">Week(s)</option>'
+                    }else if(VALUE == 'Weekly'){
+                        //Week(s), Month(s)
+                        EventRepeatForTypeSelect.innerHTML = '<option value="W">Week(s)</option><option value="M">Month(s)</option>'
+                    }else if(VALUE == 'Monthly'){
+                        ////Month(s), Year(s);
+                        EventRepeatForTypeSelect.innerHTML = '<option value="M">Month(s)</option><option value="Y">Year(s)</option>'                      
+                    }else if(VALUE == 'Yearly'){
+                        //Years(s), input max-length auf 2 Stellen
+                        EventRepeatForTypeSelect.innerHTML = '<option value="Y">Year(s)</option>'                      
+                    }
+                }
+            })
+
+            //Selects in Div hinzufügen
+            EventRepeatSelectDOM.appendChild(SelectRepeatType);
+            EventRepeatSelectDOM.appendChild(EventRepeatForDIV);
+
+            //Elemente in das EventRepeatDIV hinzufügen
+            CalendarOverlayEventRepeatDIV.appendChild(RepeatHeadingSpan);
+            CalendarOverlayEventRepeatDIV.appendChild(EventRepeatSelectDOM);
+        }
+
+        OverlayStartDateInput.addEventListener('change', (e)=> {
+            if (e.target.value){
+                const ValuesStart = e.target.value.split('-');
+            const ValuesEnd = OverlayEndDateInput.value.split('-');
+
+            let DateStart = new Date(ValuesStart[0], ValuesStart[1]-1, ValuesStart[2]);
+            let DateEnd = new Date(ValuesEnd[0], ValuesEnd[1]-1, ValuesEnd[2]);
+
+            if(DateEnd < DateStart){
+                //EndDatum muss angepasst werden
+                OverlayEndDateInput.value = e.target.value;
+                OverlayEndDateInput.min = e.target.value;
+
+                DateEnd = new Date(ValuesStart[0], ValuesStart[1]-1, ValuesStart[2]);
+
+                //Stundenanzeige optimieren
+                const timesStart = OverlayStartTimeInput.value.split(":");
+                const timesEnd = OverlayEndTimeInput.value.split(":");
+
+                DateStart.setHours(timesStart[0], timesStart[1]);
+                DateEnd.setHours(timesEnd[0], timesEnd[1]);
+
+                if(DateEnd < DateStart){
+                    let newHours = DateStart.getHours()+1;
+                    if(newHours != 24){
+                        if(newHours < 10){
+                            newHours = "0"+newHours;
+                        }
+                        OverlayEndTimeInput.value = newHours+":00"
+                    }else{
+                        DateEnd.setDate(DateEnd.getDate()+1);
+                        let day = DateEnd.getDate();
+                        let month = DateEnd.getMonth()+1;
+
+                        if(day < 10){
+                            day = "0"+day
+                        }
+
+                        if(month < 10){
+                            month = "0"+month;
+                        }
+
+                        console.log(DateEnd.getFullYear()+'-'+month+'-'+day)
+                        DateEnd.setHours(0, 0);
+                        OverlayEndTimeInput.value = "00:00";
+                        OverlayEndDateInput.value = DateEnd.getFullYear()+'-'+month+'-'+day;
+                    }
+                }
+            }
+            }
+        })
+
+        OverlayStartTimeInput.addEventListener('change', (e)=>{
+            if(e.target.value){
+                //Start und End Dates erstellen
+                const DateStart = OverlayStartDateInput.value.split('-');
+                const timeStart = e.target.value.split(':');
+                const DateEnd = OverlayEndDateInput.value.split("-");
+                const timeEnd = OverlayEndTimeInput.value.split(':');
+
+                const Start = new Date(DateStart[0], DateStart[1]-1, DateStart[2], timeStart[0], timeStart[1]);
+                const End = new Date(DateEnd[0], DateEnd[1]-1, DateEnd[2], timeEnd[0], timeEnd[1]);
+
+                if(End <= Start){
+                    //End Zeit ist über der Start Zeit
+                    const newEnd = new Date(Start.getFullYear(), Start.getMonth(), Start.getDate(), Start.getHours()+1, Start.getMinutes());
+                    //Date Anzeige anpassen
+                    let month = newEnd.getMonth()+1;
+                    let day = newEnd.getDate();
+                    if(month < 10){
+                        month = "0"+month
+                    }
+
+                    if(day <10){
+                        day = "0"+day
+                    }
+
+                    OverlayEndDateInput.value = newEnd.getFullYear()+'-'+month+'-'+day;
+
+                    //Time Anzeige anpassen
+                    let hours = newEnd.getHours();
+                    let minutes = newEnd.getMinutes();
+
+                    if(hours < 10){
+                        hours = "0"+hours;
+                    }
+
+                    if(minutes < 10){
+                        minutes = "0"+minutes
+                    }
+
+                    OverlayEndTimeInput.value = hours+':'+minutes;
+                }
+            }
+        })
+
+        OverlayEndDateInput.addEventListener('change', (e)=>{
+            if(e.target.value){
+                const StartDate = OverlayStartDateInput.value.split('-');
+                const StartTime = OverlayStartTimeInput.value.split(':');
+                const EndDate = OverlayEndDateInput.value.split('-');
+                const EndTime = OverlayStartTimeInput.value.split(':');
+
+                const DateStart = new Date(StartDate[0], StartDate[1]-1, StartDate[2], StartTime[0], StartTime[1]);
+                const DateEnd = new Date(EndDate[0], EndDate[1]-1, EndDate[2], EndTime[0], EndTime[1]);
+
+                if(DateEnd <= DateStart){
+                    const newEnd = new Date(DateStart.getFullYear(), DateStart.getMonth(), DateStart.getDate(), DateStart.getHours()+1, DateStart.getMinutes());
+
+                    //Date Anzeige anpassen
+                    let month = newEnd.getMonth()+1;
+                    let day = newEnd.getDate();
+                    if(month < 10){
+                        month = "0"+month
+                    }
+
+                    if(day <10){
+                        day = "0"+day
+                    }
+
+
+                    OverlayEndDateInput.value = newEnd.getFullYear()+'-'+month+'-'+day;
+
+                    //Time Anzeige anpassen
+                    let hours = newEnd.getHours();
+                    let minutes = newEnd.getMinutes();
+
+                    if(hours < 10){
+                        hours = "0"+hours;
+                    }
+
+                    if(minutes < 10){
+                        minutes = "0"+minutes
+                    }
+
+                    OverlayEndTimeInput.value = hours+':'+minutes;
+                }
+            }
+        })
+
+        OverlayEndTimeInput.addEventListener('change', (e)=>{
+            if(e.target.value){
+                //Start und End Dates erstellen
+                const DateStart = OverlayStartDateInput.value.split('-');
+                const timeStart = OverlayStartTimeInput.value.split(':');
+                const DateEnd = OverlayEndDateInput.value.split("-");
+                const timeEnd = e.target.value.split(':');
+
+                const Start = new Date(DateStart[0], DateStart[1]-1, DateStart[2], timeStart[0], timeStart[1]);
+                const End = new Date(DateEnd[0], DateEnd[1]-1, DateEnd[2], timeEnd[0], timeEnd[1]);
+
+                if(End <= Start){
+                    //End Zeit ist über der Start Zeit
+                    const newEnd = new Date(Start.getFullYear(), Start.getMonth(), Start.getDate(), Start.getHours()+1, Start.getMinutes());
+                    //Date Anzeige anpassen
+                    let month = newEnd.getMonth()+1;
+                    let day = newEnd.getDate();
+                    if(month < 10){
+                        month = "0"+month
+                    }
+
+                    if(day <10){
+                        day = "0"+day
+                    }
+
+                    OverlayEndDateInput.value = newEnd.getFullYear()+'-'+month+'-'+day;
+
+                    //Time Anzeige anpassen
+                    let hours = newEnd.getHours();
+                    let minutes = newEnd.getMinutes();
+
+                    if(hours < 10){
+                        hours = "0"+hours;
+                    }
+
+                    if(minutes < 10){
+                        minutes = "0"+minutes
+                    }
+
+                    OverlayEndTimeInput.value = hours+':'+minutes;
+                }
+            }
+        })
+        
+        function DefaultFormatDate(date){
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+
+            if(month < 10){
+                month = "0"+month
+            }
+
+            if(day < 10){
+                day = "0"+day;
+            }
+
+            return date.getFullYear()+'/'+month+'/'+day;
+        }
+
+        function collectNewEventData(){
+            //Div Variablen 
+            const OverlayStartDateInput = document.getElementById('OverlayEventStartDate')
+            const OverlayStartTimeInput = document.getElementById("OverlayEventStartTime");
+            const OverlayEndTimeInput = document.getElementById("OverlayEventEndTime");
+            const OverlayEndDateInput = document.getElementById('OverlayEventEndDate');
+            const CalendarOverlayGanztagBtn = document.getElementById('CalendarAddTimeGanztag');
+            const OtherTypeRadio = document.getElementById('Otherradio');
+            const CalendarOverlayEventRepeatDIV = document.getElementById('CalendarRepeatEventDIV');
+            const CalendarOverlayDescriptionTextarea = document.getElementById('CalendarAddDescription');
+            const CalendarAddBGColorInput = document.getElementById('CalendarAddBGColorInput')
+
+            //Infos zum sammeln: Titel, Location, StartDate, StartTime, EndDate, EndTime, SchedulingType, SchedulingDuration, Type, BackgroundColor, TextColor ,Description
+            let Title; 
+            let Location;
+            let StartDate;
+            let StartTime;
+            let EndDate;
+            let EndTime;
+            let SchedulingType;
+            let SchedulingDuration;
+            let EventType;
+            let BGColor;
+            let Color;
+            let Description;
+
+            //Titel
+            if(document.getElementById('OverlayEventTitleInput').value){
+                Title = document.getElementById('OverlayEventTitleInput').value;
+            }else{
+                Title = 'No Title'
+            }
+
+            //Location
+            const LocationDIV = document.getElementById('AddLocationInput');
+            if(LocationDIV){
+                if(LocationDIV.value){
+                    Location = LocationDIV.value;
+                }
+            }
+
+             //Start-Date
+             if (OverlayStartDateInput.value){
+                    const DateStart = OverlayStartDateInput.value.split('-');
+                    const DateS = new Date(DateStart[0], DateStart[1]-1, DateStart[2]);
+
+                    StartDate = DefaultFormatDate(DateS);
+                }else{
+                    //Den aktuellen Tag als Start nehmen
+                    const DateS = new Date();
+
+                    StartDate = DefaultFormatDate(DateS)
+                }
+                
+                let plus = 0;
+                if (CalendarOverlayGanztagBtn.checked){
+                    plus = 1;
+                }
+
+                //End-Date
+                if(OverlayEndDateInput.value){
+                    const EndS = OverlayEndDateInput.value.split('-');
+                    const DateE = new Date(EndS[0], parseInt(EndS[1])-1,parseInt( EndS[2])+plus);
+
+                    EndDate = DefaultFormatDate(DateE);
+                }else{
+                    //Start-Date +1 nehmen
+                    const StartS = StartDate.split('/');
+                    const DateE = new Date(parseInt(StartS[0]), parseInt(StartS[1])-1, parseInt(StartS[2])+plus);
+
+                    EndDate = DefaultFormatDate(DateE);
+                }
+
+            //Ganztag
+            if (CalendarOverlayGanztagBtn.checked){
+                //Ganztag
+                //Times
+                StartTime = "00:00";
+                EndTime = "00:00";
+            }else{
+                //Kein Ganztag
+                //Startzeit
+                if (OverlayStartTimeInput.value){
+                    //Zeit übernehmen
+                    StartTime = OverlayStartTimeInput.value;
+                }else{
+                    //00:00 Uhr
+                    StartTime = "00:00";
+                }
+
+                //Endzeit
+                if (OverlayEndTimeInput.value){
+                    EndTime = OverlayEndTimeInput.value;
+                }else{
+                    if (StartDate == EndDate){
+                        //Start Time +1
+                        const StartD = StartDate.split('/');
+                        const StartT = StartTime.split(":");
+
+                        const newEnd = new Date(StartD[0], parseInt(StartD[1])-1, StartD[2], parseInt(StartT[0])+1, StartT[1]);
+                        EndDate = DefaultFormatDate(newEnd);
+
+                        let hours = newEnd.getHours();
+                        let minutes = newEnd.getMinutes();
+
+                        if(hours < 10){
+                            hours = "0"+hours
+                        }
+
+                        if(minutes <10){
+                            minutes = "0"+minutes
+                        }
+
+                        EndTime = hours+':'+minutes
+                    }else{
+                        //End Zeit auf 00:00
+                        EndTime = "00:00"
+                    }
+                }
+            }
+
+            //SchedulingType
+            if (document.getElementById('CalendarEventRepeat')){
+                SchedulingType =document.getElementById('CalendarEventRepeat').value;;
+
+                if (SchedulingType != "Never"){
+                    //Scheduling Duration
+                    let NumberInput;
+                    const NumberInputValue = document.getElementById('CalendarEventRepeatDurationInput').value;
+                    if (parseInt(NumberInputValue) > 0){
+                        NumberInput = NumberInputValue;
+                    }else{
+                        NumberInput = "1";
+                    }
+                    const RepeatDurationType = document.getElementById('CalendarEventRepeatDurationType').value;
+                    SchedulingDuration = NumberInput+"*"+RepeatDurationType;
+                }
+            }
+
+            //Type
+            if (document.getElementById('Workradio').checked){
+                EventType = "Work"
+            }else if(document.getElementById('Freeradio').checked){
+                EventType = "Free"
+            }else{
+                EventType = "Other"
+            }
+
+            //BackgroundColor
+            BGColor = CalendarAddBGColorInput.value;
+
+            //TextColor
+            const checkBGColor = lightOrDark(BGColor);
+            if (checkBGColor == "light"){
+                Color = "black"
+            }else{
+                Color = "white"
+            };
+
+            //Description
+            Description = CalendarOverlayDescriptionTextarea.value;
+
+            //Event-Objekt erstellen
+            const Event = {
+                title: Title,
+                location: Location,
+                startDate: StartDate,
+                startType: StartTime,
+                endDate: EndDate,
+                endTime: EndTime,
+                schedulingType: SchedulingType,
+                schedulingDuration: SchedulingDuration,
+                backgroundColor: BGColor,
+                textColor: Color,
+                type: EventType,
+                description: Description
+            }
+
+            console.log(Event);
+        }
+
+        function lightOrDark(color) {
+
+// Variables for red, green, blue values
+var r, g, b, hsp;
+
+// Check the format of the color, HEX or RGB?
+if (color.match(/^rgb/)) {
+
+    // If RGB --> store the red, green, blue values in separate variables
+    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+    
+    r = color[1];
+    g = color[2];
+    b = color[3];
+} 
+else {
+    
+    // If hex --> Convert it to RGB: http://gist.github.com/983661
+    color = +("0x" + color.slice(1).replace( 
+    color.length < 5 && /./g, '$&$&'));
+
+    r = color >> 16;
+    g = color >> 8 & 255;
+    b = color & 255;
+}
+
+// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+hsp = Math.sqrt(
+0.299 * (r * r) +
+0.587 * (g * g) +
+0.114 * (b * b)
+);
+
+// Using the HSP value, determine whether the color is light or dark
+if (hsp>127.5) {
+
+    return 'light';
+} 
+else {
+
+    return 'dark';
+}
+}
+    </script>
+</body>
+</html>

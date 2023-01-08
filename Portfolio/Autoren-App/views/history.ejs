@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            max-width: 100%;
+        }
+        .CommentArea{
+            width: 100%;
+            margin-top: 2%;
+            background-color: rgb(16, 52, 65);
+        }
+        .Comment-Item{
+            background-color: lightskyblue;
+            margin-right: 3%;
+            margin-left: 3%;
+            margin-top: 1%;
+        }
+        .Flexbox {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .POSTComment{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+    <h1 style="text-align: center;"><%= title %></h1> <br>
+    <em>von <a href="/profile/<%= author %>"><%=author%></a></em>
+    <main><%= content %></main>
+    <div style="margin-top: 20%;">
+        <em>Veröffentlichkeitsdatum: <%= date %></em><br>
+    <% if (likes.includes(user)){%>
+        <button onclick="Unlike()" id="UnlikeArticle">Gefällt mir entfernen</button><em style="margin-left: 2%;"><%= likes.length%> Person(en) gefällt diese Geschichte</em>
+    <%} else { %>
+        <button onclick="Like()" id="LikeArticle">Gefällt mir</button><em style="margin-left: 2%;"><%= likes.length%> Person(en) gefällt diese Geschichte</em>
+        <button><a href="/reportArticle/<%= article_id%>">Melden</a></button>
+    <%}%>
+        
+      
+    </div>
+    <div class="CommentArea">
+        <h2>Kommentare</h2>
+        <div class="POSTComment">
+            <form action="/<%= article_id%>/postComment" method="POST">
+                <input 
+                     id="CommentContent",
+                     name="CommentContent",
+                     type="CommentContent",
+                     placeholder="Kommentar schreiben..."
+                /><button>Absenden</button>
+            </form>
+        </div>
+        <% if (commentList.length == 0){%>
+            <p><em>Noch keine Kommentare vorhanden</em></p>
+        <%}%>
+        <% commentList.forEach(comment =>{ %>
+            <div class="Comment-Item">
+                <div class="Flexbox">
+                    <a href="/profile/<%= comment.Cauthor%>">von <%= comment.Cauthor%></a><% if (user == comment.CauthorID){%>
+                        <div></div><button style="text-decoration: none; background-color: blanchedalmond; border-radius: 40%;"><a href="/comment/<%= comment._id %>/delete"><i class="fa-solid fa-trash-can">Löschen</i></a></button>
+                    <%}%>
+                        
+                </div>
+                <p style="text-align: center; color: black;"><%= comment.CommentContent%></p>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <%if (comment.likers.includes(user)){%>
+                        <button style="text-align: center;"><a href="/unlikeComment/<%= article_id%>/<%= comment._id%>">Gefällt mir entfernen</a></button><em style="color: rgb(109, 109, 109);"><%= comment.likers.length%> Person(en) gefällt dieser Kommentar</em>
+                    <%} else {%>
+                        <button style="text-align: center;"><a href="/likeComment/<%= article_id%>/<%= comment._id%>">Gefällt mir</a></button><em style="color: rgb(109, 109, 109);"><%= comment.likers.length%> Person(en) gefällt dieser Kommentar</em>
+                    <%}%>
+                    <button><a href="/<%= article_id%>/reportComment/<%= comment.id%>">Melden</a></button>
+                </div>
+            </div>
+       <% }) %>
+    </div>
+ </div>
+ <script>
+     function Like(){
+         let articleID = "<%= article_id %>"; 
+         location.href = "/likePost/"+articleID;
+     }
+     function Unlike() {
+        let articleID = "<%= article_id %>"; 
+        location.href = "/unlikePost/"+articleID;
+     }
+ </script>
+</body>
+</html>

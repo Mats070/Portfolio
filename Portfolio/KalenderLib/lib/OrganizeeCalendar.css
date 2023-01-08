@@ -1,0 +1,812 @@
+:root{
+    /* Globale CSS-Variablen*/
+    --calendar-background: rgb(20, 20, 20);
+    --calendar-color: white;
+}
+
+*{
+    box-sizing: border-box;
+}
+   
+   
+/* Scrollbar Styling*/ 
+/* Works on Firefox */
+  .organizee-calendar #calendar-main #calendar-main-content-week,
+  .organizee-calendar #calendar-main #calendar-main-content-day {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(98, 98, 215) rgb(152, 229, 229);
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .organizee-calendar #calendar-main #calendar-main-content-day::-webkit-scrollbar,
+  .organizee-calendar #calendar-main #calendar-main-content-week::-webkit-scrollbar {
+    width: 1%;
+  }
+  
+  .organizee-calendar #calendar-main #calendar-main-content-day::-webkit-scrollbar-track,
+  .organizee-calendar #calendar-main #calendar-main-content-week::-webkit-scrollbar-track {
+    background: rgb(152, 229, 229);
+  }
+  
+  .organizee-calendar #calendar-main #calendar-main-content-day::-webkit-scrollbar-thumb,
+  .organizee-calendar #calendar-main #calendar-main-content-week::-webkit-scrollbar-thumb {
+    background-color: rgb(98, 98, 215);
+    border-radius: 20px;
+    border: 3px solid rgb(152, 229, 229);
+  }
+  /* Allgemeines Styling */
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.gray{
+    color: gray;
+}
+
+.lightgrey{
+    color: rgb(120, 112, 112);
+}
+
+.organizee-calendar{
+    width: 100%;
+    height: 100vh;
+}
+
+/* Calendar-Header */
+
+.organizee-calendar #calendar-header{
+    height: 7.5%;
+    padding: 0 4px ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.organizee-calendar #calendar-header #header-date-section #date-display{
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.organizee-calendar #calendar-header #header-date-section{
+    width: 25%;
+    display: flex;
+    margin-left: 2px;
+    justify-content: space-between;
+    align-items: center;
+}
+    
+
+.organizee-calendar #calendar-header #header-date-section span{
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    font-size: 1.6em;
+    border: 0.5px solid darkgray;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Header Button Section */
+.organizee-calendar #calendar-header #buttonsection{
+    display: flex;
+    align-items: center;
+}
+
+.organizee-calendar #calendar-header #buttonsection #todayBtn{
+    background-color: darkblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 4vh;
+    width: 7em;
+    margin-right: 2%;
+}
+
+.organizee-calendar #calendar-header #buttonsection .selectdiv{
+    display: flex;
+    align-items: center;
+}
+  
+  /* IE11 hide native button*/
+  select::-ms-expand {
+  display: none;
+  }
+  
+  
+  
+  .organizee-calendar #calendar-header #buttonsection .selectdiv select {
+    display: block;
+    width: 100px;
+    height: 4vh;
+    float: right;
+    margin: 5px 0px;
+    
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    -ms-word-break: normal;
+    word-break: normal;
+  }
+
+/* Calendar Main */
+
+.organizee-calendar #calendar-main{
+    height: 85vh;
+}
+
+/* Calendar Footer */
+.organizee-calendar #calendar-footer{
+    height: 7.5%;
+}
+
+.organizee-calendar #calendar-footer .calendar-footer-credits{
+    padding-top: 1%;
+    padding-right: 4%;
+    text-align: right;
+    color: grey;
+}
+
+/* Default Calendar Overlay */
+.organizee-calendar #calendarOverlay{
+    user-select: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0vh;
+    left: 0%;
+    z-index: 95;
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+    text-align: center;
+    overflow-y: hidden;
+    display: none;
+}
+
+.organizee-calendar #calendarOverlay .CalendarOverlayCloseBtn {
+    position: absolute;
+    top: 0;
+    right: 2%;
+    font-size: 36px;
+    margin-left: 50px;
+    color: red;
+    text-decoration: none;
+}
+
+.organizee-calendar #calendarOverlay .CalendarOverlayCloseBtn:hover{
+   cursor: pointer;
+   color: orange;
+}
+
+.organizee-calendar #calendarOverlay .EventInfoInput{
+    margin-top: 1vh;
+    height: 2em;
+    width: 50%;
+}
+
+.organizee-calendar #calendarOverlay .addLocation p{
+    color: rgb(6, 143, 143);
+    user-select: none;
+    text-align: left;
+    padding-left: 25%;
+}
+
+.organizee-calendar #calendarOverlay .addLocation p:hover{
+    text-decoration: underline;
+    color: rgb(4, 200, 200);
+    cursor: pointer;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv{
+    margin-top: 5vh;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .all-day-slider{
+    display: flex;
+    font-weight: bolder;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .all-day-slider .dateHeading{
+    font-size: 1.2em;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv #AllDaySwitch{
+    display: flex;
+    align-items: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv #AllDaySwitch::before{
+    content: "All-Day: ";
+    padding-right: 10px;
+    font-weight: normal;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs{
+    margin-top: 3vh;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv .CalendarstartEndInputs div .OverlayDateTimeInputs{
+    background-color: var(--calendar-background);
+    border: none;
+    color: var(--calendar-color);
+    font-size: 1.2em;
+    border: 1px solid var(--calendar-color);
+    width: 8em;
+    text-align: center;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions{
+    margin-top: 5vh;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions span.OptionsHeading{
+    display: flex;
+    text-align: left;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent{
+    margin-top: 2vh;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent span.add-scheduling-rule{
+    font-size: 0.9em;
+    user-select: none;
+    color: rgb(6, 143, 143);
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent span.add-scheduling-rule:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(4, 200, 200);
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent select{
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+    border: 1px solid var(--calendar-color);
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent select option{
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor input[type="text"]{
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+    border: 1px solid var(--calendar-color);
+    height: 4vh;
+    width: 20px;
+    text-align: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor::before{
+    content: 'for';
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatFor select{
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+    border: 1px solid var(--calendar-color);
+    height: 4vh;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatDOM{
+    display: flex;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions .CalendarRepeatEvent #CalendarEventRepeatDOM span{
+    padding: 0px 4px;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType{
+    margin-top: 3vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .heading{
+    font-size: 1.2em;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType label{
+    font-size: 1.1em;
+}
+
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .radiogroup{
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddEventType .radiogroup div{
+    padding-right: 3%;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventOptions #CalendarAddBGColor{
+    margin-top: 3vh;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.organizee-calendar #calendarOverlay #CalendarAddEventSubmitBtn{
+    margin-top: 6vh;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.1em;
+    background-color: var(--calendar-background);
+    color: var(--calendar-color);
+    border: solid 2px var(--calendar-color);
+    padding: 0.2em 1em;
+}
+/* Switches */
+ /* The switch - the box around the slider */
+ .organizee-calendar #calendarOverlay .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.organizee-calendar #calendarOverlay .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 21px;
+    width: 21px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(21px);
+    -ms-transform: translateX(21px);
+    transform: translateX(21px);
+}
+
+/* Rounded sliders */
+.organizee-calendar #calendarOverlay .slider.round {
+    border-radius: 34px;
+}
+
+.organizee-calendar #calendarOverlay .slider.round:before {
+    border-radius: 50%;
+} 
+
+
+/* Responsive Design*/
+@media (max-width: 750px){
+    /* Weniger Padding-Left und Padding-Right */
+    .organizee-calendar #calendarOverlay .EventInfoInput{
+        width: 90%;
+    }
+
+    .organizee-calendar #calendarOverlay .addLocation p{
+        padding-left: 5%;
+    }
+
+    .organizee-calendar #calendarOverlay #CalendarDOMAddTimeDiv{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .organizee-calendar #calendarOverlay #CalendarAddEventOptions{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    
+    .organizee-calendar #calendarOverlay #CalendarAddEventSubmitBtn{
+        margin-top: 3vh;
+    }
+
+}
+
+/* Add Button */
+
+.organizee-calendar .AddBtn{
+    padding-bottom: 0.1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 6.5%;
+    top: 82%;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 20%;
+    z-index: 99;
+    background-color: lightblue;
+    color: black;
+    font-size: 2.5em;
+    border: 1px solid black;
+}
+
+.organizee-calendar .AddBtn:hover{
+    cursor: pointer;
+}
+
+/* Responsive Design */
+
+@media (max-width: 750px) {
+    /* Datum lesbarer machen*/
+    .organizee-calendar{
+        height: 100%;
+    }
+    .organizee-calendar #calendar-header #header-date-section{
+        width: 40%;
+    }
+    .organizee-calendar #calendarOverlay{
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        top: 0;
+    }
+    .organizee-calendar #calendarOverlay input[type='date']{
+        height: 1.5em;
+    }
+
+    .organizee-calendar #calendarOverlay input[type='time']{
+        height: 1.5em;
+    }
+
+    .organizee-calendar #calendarOverlay span{
+        font-size: 1.5em;
+    }
+}
+
+
+/* Month-View-Styling */
+
+.organizee-calendar #calendar-main #calendar-main-content-month{
+    height: 95%;
+    display: grid;
+    grid-template-columns: repeat(7, calc(100% / 7));
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day{
+    border: 1px solid grey;
+    max-width: 100%;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .padding-day{
+    color: darkgrey;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day:hover{
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .currentDay{
+    background-color: lightblue;
+}
+
+.organizee-calendar #calendar-main #weekdaysMonth{
+    height: 5%;
+    display: flex;
+}
+
+.organizee-calendar #calendar-main #weekdaysMonth .weekday{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% / 7);
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .Events{
+    height: 80%;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .dayHeaderInfos{
+    height: 20%;
+    display: flex;
+    justify-content: right;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .dayHeaderInfos span{
+    padding-right: 3px;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .Events .event{
+    /*overflow-y: hidden;*/
+    overflow-x: hidden;
+    white-space: nowrap;
+    height: 18%;
+    max-height: 18%;
+    width: 100%;
+    display: flex;
+    margin-bottom: 1%;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .Events .event.aligncenter{
+    /* Elemente zentrieren */
+    align-items: center;
+    overflow-y: clip;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-month .day .Events .event .MonthViewShowColor{
+    margin-left: 2px;
+    display: inline-block;
+    text-align: center;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex: none;
+}
+
+@media (max-width: 1000px){
+    /* Responsive Design */
+    .lightgrey{
+        display: none;
+    }
+}
+
+/* Day-View-Styling */
+
+.organizee-calendar #calendar-main #calendar-main-content-day{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: 0.5px solid grey;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row{
+    width: 100%;
+    height: 12%;
+   /* border-right: 0.5px solid black;
+    border-top: 1px solid black;*/
+    display: flex;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row.all-day{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgb(240, 240, 232);
+    height: 16%;
+    max-height: 25%;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row.all-day .hour-display{
+    height: 100%;
+    border-bottom: 0.5px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row.all-day .event-section{
+    border-bottom: 0.5px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .hour-display{
+    background-color: lightgray;
+    width: 6%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section{
+    width: 94%;
+    height: 100%;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section .event-first-hour-half {
+    height: 50%;
+    width: 100%;
+    border-bottom: 0.25px solid rgb(137, 131, 131);
+    display: flex;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section .event-second-hour-half{
+    height: 50%;
+    width: 100%;
+    display: flex;
+}
+
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row.all-day .event-section .day-event-all-day{
+    margin: 0.1em;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section .day-event{
+    flex: 1;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section .placeholder{
+    flex: 1;
+}
+
+@media (max-width: 600px){
+    /* Stunden anzeige vergrößern */
+    .organizee-calendar #calendar-main #calendar-main-content-day .hour-row .hour-display{
+        width: 15%;
+    }
+    .organizee-calendar #calendar-main #calendar-main-content-day .hour-row .event-section{
+        width: 85%;
+    }
+}
+
+/* Week-Styling */
+.organizee-calendar #calendar-main #calendar-main-content-week{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: 0.5px solid grey;
+    display: grid;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn{
+    border-right: 1px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn.today{
+    background-color: beige;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .date-display{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5vh;
+    border-top: 1px solid black;
+    position: sticky;
+    top: 0%;
+    font-weight: bold;
+    z-index: 10;
+    background-color: azure;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row.hour-row.all-day{
+    position: sticky;
+    top: 5vh;
+    z-index: 10;
+    background-color: rgb(240, 240, 232);
+    height: 17vh;
+    max-height: 25%;
+    border-top: 0.1px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row{
+    height: 13vh;
+    border-top: 0.1px solid black;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row.hour-row.all-day .event-section-first-half{
+    border: none;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row .event-section-first-half{
+    height: 50%;
+    width: 100%;
+    border-bottom: 0.01px grey solid;
+    display: flex;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row .event-section-second-half{
+    height: 50%;
+    width: 100%;
+    display: flex;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row .event-section-first-half .day-event{
+    flex: 1;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .DayColumn .hour-row .event-section-second-half .day-event{
+    flex: 1;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .timeDiv{
+    height: 300vh;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .timeDiv .paddingdiv{
+    height: 5vh;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: azure;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .timeDiv .hour-display.all-day{
+    position: sticky;
+    top: 5vh;
+    z-index: 10;
+    background-color: rgb(240, 240, 232);
+    height: 17vh;
+    max-height: 25%;
+}
+
+.organizee-calendar #calendar-main #calendar-main-content-week .timeDiv .hour-display{
+    height: 13vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    background-color: lightgray;
+}
+
+/* List View */
+.organizee-calendar #calendar-main #calendar-main-content-list{
+    width: 100%;
+    height: 100%;
+    background-color: #cccccc;
+}

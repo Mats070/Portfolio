@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+          #Heading{
+              height: 15vh;
+          }
+          #Content{
+              margin-top: 5vh;
+              height: 60vh;
+              border: solid 2px white;
+              overflow-y: auto;
+              scroll-behavior: smooth;
+              transform: scaleY(-1);
+          }
+          #Writing{
+              height: 5vh;
+              border: solid 2px white;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+          }
+          .message{
+              width: 80%;
+              margin-left: 10%;
+              height: auto;
+              margin-top: 1%;
+              background-color: seashell;
+              color: black;
+            -moz-hyphens: auto;
+            -o-hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            transform: scaleY(-1); 
+          }
+    </style>
+</head>
+<body>
+    <div id="Heading">
+        <h1 style="text-align: center;"><%= Name%></h1>
+        <p style="text-align: center;"><em>Mitglieder: <%= Users%></em></p>
+    </div>
+    <div id="Content">
+        <div class="message">
+            <p style="text-align: center;"><em>Raum wurde erstellt</em></p>
+        </div>
+        <% MessageList.forEach(message => {%>
+            <div class="message">
+                <p><a href="/profile/<%= message.MauthorID%>"><%= message.authorM%></a>:      <%= message.MessageContent%>     <!-- <%= message.date%> --></p>
+                <% if (user == message.authorM){%>
+                    <button onclick="deleteUpdate()"><a href="/users/chats/<%= message.toRoom %>/deletemsg/<%= message.id %>">Löschen</a></button>
+                <%}%>
+            </div>
+            
+        <%})%>
+        <div id="Test" style="height: 1px;"></div>
+    </div>
+    <div id="Writing">
+        <form action="/users/chats/<%= RoomID %>" method="POST" id="ChatForm">
+            <input type="text" id="MessageContent" name="MessageContent" placeholder="Nachricht eingeben" required autofocus autocomplete="off"><button type="submit">Absenden</button>
+        </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        window.addEventListener("load", () => {
+            document.getElementById("Test").scrollIntoView(true);
+           // document.getElementById("MessageContent").focus();
+            //console.log("Hello");
+        })
+        const ChatSubmit = document.getElementById("Writing");
+        const Chatmessages = document.getElementById("main");
+
+        const socket = io();
+        
+//Message submit
+ChatSubmit.addEventListener("submit", e => {
+   // e.preventDefault();
+    socket.emit("NEWmessage");
+    //console.log("Message");
+
+
+})
+
+//Nachrichten auch über Websocket wieder löschen
+function deleteUpdate(){
+    socket.emit("NEWmessage");
+}
+
+socket.on("message", () => {
+           //console.log("Hat geklappt. Ist wieder im Frontend angekommen");
+        setTimeout(function(){
+            location.reload();
+        }, 500);
+    })
+
+
+        socket.on("redirectIndex", ()=>{
+            setTimeout(function(){
+                location.href = "/users/chats/view";
+            }, 500);
+        })
+    </script>
+</body>
+</html>

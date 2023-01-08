@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .chatroom{
+            margin-top: 2%;
+            background-color: cadetblue;
+        }
+        .top{
+            display: flex;
+        }
+        .linktoroom{
+            position: absolute;
+            left: 75%;
+        }
+    </style>
+</head>
+<body>
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+          <div class="card card-body">
+            <% if(typeof errors != "undefined") { %>
+              <% errors.forEach(function(error){ %>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <%= error.msg %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <% }); %>
+            <% } %>
+        
+            <% if(success_msg != ""){ %>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <% } %>
+    
+              <% if(error_msg != ""){ %>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <%= error_msg %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <% } %>
+              <% if(error != ""){ %>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <%= error %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <% } %>
+    <button id="BtnNeuerRaum">
+      <details id="details">
+        <summary>Create new ChatRoom</summary>
+    <form action="/users/chats" method="POST" onsubmit="CreateChatroom()">
+        <div class="form-group">
+            <label for="users">Mitglied per Benutzernamen auswählen:</label>
+            <input
+              type="users",
+              name="users",
+              id="users",
+              class="form-control",
+              placeholder="Benutzername des Users eintragen",
+              <% if (newMember != undefined){%>
+                value= <%= newMember%>
+              <%}%>
+            />
+        </div>
+        <div class="orm-group">
+            <label for="Name">Gruppenname: </label>
+            <input
+              type="Name",
+              name="Name",
+              id="Name",
+              class="form-control",
+              placeholder="Gruppenname (z.B eure Namen)",
+              value="<%= typeof Name != 'undefined' ? Name : '' %>"
+            />
+        </div>
+        <em>Enter drücken um zu bestätigen</em>
+        <button style="display: none;">Fertig</button>
+        </form>
+    </details>
+</div>
+</div>
+</div>
+    <% RoomList.forEach(room=>{%>
+        <div class="chatroom" onclick="location.href = '/users/chats/<%= room.id%>'">
+            <div class="top"><p><h3><%= room.Name %></h3></p></div>
+            <div class="bottom">
+                <% if (newMessages.includes(room.id)){%>
+                     <span style="padding-left: 2%;">Neue Nachricht(en)!</span>
+                <%} %>
+                <a href="/users/chats/deleteRoom/<%= room.id%>" onclick="DeleteChatroom()">Löschen</a>
+            </div>
+        </div>
+        <% })%>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+      window.addEventListener("load", function(){
+        console.log("<%=newMember%>");
+        if ("<%=newMember%>" != ""){
+            document.getElementById("details").open = "true";
+            document.getElementById("Name").focus();
+        }
+      })
+
+        const socket= io();
+        function DeleteChatroom(){
+             socket.emit("ChatroomDeleted");
+             socket.emit("NewRoom");
+        }
+
+       function CreateChatroom(){
+           socket.emit("NewRoom");
+       }
+
+       socket.on("Reload",() => {
+           console.log("Frontend")
+           setTimeout(function(){
+            location.reload();
+           }, 500);
+           
+       })
+    </script>        
+</body>
+</html>

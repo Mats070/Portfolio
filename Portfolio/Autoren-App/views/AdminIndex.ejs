@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #pushAdmins {
+            margin-top: 2%;
+        }
+
+        #ChangeAdmins{
+            border: solid 2px white;
+            padding: 1%;
+            text-align: center;
+        }
+        #Articles{
+            border: solid 2px white;
+            text-align: center;
+            margin-top: 1%;
+        }
+        #Comments{
+            border: solid 2px white;
+            text-align: center;
+            margin-top: 1%;
+        }
+        .RepArticle{
+            margin-top: 1%;
+            width: 90%;
+            margin-left: 5%;
+            background-color: rgb(179, 170, 170);
+            color: black;
+        }
+
+        .RepComment{
+          margin-top: 1%;
+          width: 90%;
+          margin-left: 5%;
+          background-color: rgb(202, 194, 194);
+          color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Admin-Bereich</h1>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+    <div id="ChangeAdmins">
+        <h5>Aktuelle Admins:</h5> <% AdminList.forEach(admin => { %>
+            <span><%= admin.name %>,</span>
+        <%})%>
+        <div id="pushAdmins">
+            <h5>Admin hinzufügen: </h5>
+            <form action="/AdminIndex" method="POST">
+            <input
+              type="name",
+              id="newAdmin",
+              name="newAdmin",
+              placeholder="Benutzername eingeben",
+              value="<%= typeof newAdmin != 'undefined' ? newAdmin : '' %>"
+            />
+        </form>
+        </div>
+    </div>
+    <div id="ReportedItems">
+        <div id="Articles">
+            <h2>Reported Historys: </h2>
+            <% ReportedArticles.forEach(article =>{ %>
+                <div class="RepArticle">
+                    Title: <%= article.title%> <a href="/Admin/history/<%=article.id%>">View</a><br>
+                    Author: <a href="/profile/<%= article.author %>"><%= article.author%></a>
+                </div>
+            <%}) %>
+        </div>
+        <div id="Comments">
+            <h2>Reported Comments: </h2>
+            <% ReportedComments.forEach(comment=> { %>
+                <div class="RepComment">
+                    <%= comment.Cauthor %>: <%= comment.CommentContent %>
+                    <a href="/Admin/history/<%= comment.toArticle%>#<%=comment.id%>" style="padding-left: 1em;">View Comment</a>
+                </div>
+            <%}) %>
+        </div>
+    </div>
+
+</body>
+</html>

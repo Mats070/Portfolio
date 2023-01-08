@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account-Settings</title>
+    <style>
+      html {
+            background-color: rgb(25, 25, 25);
+        }
+        body{
+            background-color: rgb(25, 25, 25);
+            color: seashell;
+            /*overflow: hidden;*/
+            scroll-behavior: smooth;
+            max-width: 100%;
+            
+        }
+        h2{
+            text-align: center;
+            margin-bottom: 5%;
+            margin-top: 5%;
+        }
+
+        #Link{
+            position: absolute;
+            height: 3%;
+            left: 5px;
+            top: 5px;
+            color: turquoise;
+        }
+        #Form {
+            max-width: 100%;
+        }
+        #DeleteButton {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 5%;
+        }
+
+        @media (max-width: 1000px) {
+          #Link {
+            position: relative;
+          }
+        }
+    </style>
+</head>
+<body>
+    <h2><i class="fas fa-user-cog">Einstellungen</i></h2>
+    <p>Hier kannst du Einstellungen an deinem Benutzerkonto verändern. Behalte deine Änderungen allerdings im Hintergrund, falls sie deine LogIn-Daten verändern. Natürlich kann man jederzeit die Einstellungen wieder zurückverändern...</p>
+    <% if(typeof errors != "undefined") { %>
+        <% errors.forEach(function(error){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+  
+      <% if(success_msg != ""){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success_msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times</span>
+          </button>
+        </div>
+        <% } %>
+
+        <% if(error_msg != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+        <% if(error != ""){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+          </div>
+        <% } %>
+
+    <form action="/users/settings" method="POST" id="Form">
+        <div class="form-group">
+            <label for="name">Namen ändern: </label>
+        <input
+           type="name",
+           id="name",
+           name="name"
+           class="form-controll",
+           placeholder="Neuer Name",
+           value="<%= typeof name != 'undefined' ? name : '' %>"
+        />
+        </div>
+        <div class="form-group">
+            <label for="email">Email ändern:  </label>
+            <input 
+            type="email",
+            id="email",
+            name="email",
+            class="form-controll",
+            placeholder="Neue Email",
+            value="<%= typeof email != 'undefined' ? email : '' %>"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><a style="color: white;">Änderungen speichern</a></button>
+    </form>
+   <div id="DeleteButton">
+    <button class="btn btn-secundary" id="Delete-Button"  onclick="confirmDelete()" style="background-color: red; margin-left: 6px; color: white;">Account löschen</button>
+   </div>
+   <script>
+      function confirmDelete(){
+            const check = confirm("Sind sie sich sicher, dass sie ihren Account löschen wollen? Ein gelöschter Account kann nicht wiederhergellt werden!")
+    
+            if (check == false){
+                location.href = "/users/settings"
+                //history.back();
+                //console.log("Back")
+            };
+            
+            if (check == true){
+                location.href = "/users/delete";
+                //console.log("Forward")
+            };
+        }
+   </script>
+</body>
+</html>

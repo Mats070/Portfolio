@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #dashboard{
+            height: 100vh;
+            width: 100%;
+        }
+        
+        #feed{
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: 100%;
+            grid-auto-flow: row;
+            direction: ltr;
+            transform: scaleY(-1);
+           
+        }
+        .container {
+            margin-left: 0px;
+            margin-right: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            width: 100%;
+            max-width: 100%;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .Feed-Item{
+            width: 90%;
+            margin: 2.5%;
+            overflow-y: auto;
+            height: 70vh;
+            border: solid 2px black;
+            border-radius: 5em;
+            -moz-hyphens: auto;
+            -o-hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            transform: scaleY(-1);
+            background-color: black;
+            padding-left: 3.5%;
+           /* background-color: rgb(112, 110, 110);*/
+            
+        }
+        #Links{
+            padding: 2%; 
+            font-size: 18px;
+        }
+        @media (max-width: 800px) {
+            #feed{
+                grid-template-columns: 100%;
+            } 
+            .Feed-Item{
+                border-radius: 0em;
+            }
+        }
+        #Heading {
+            margin-top: 2vh
+        }
+        #Suchergebnisse {
+            border: solid 2px white;
+            width: 95%;
+            margin: 2.5%;
+        }
+
+        .sidebar {
+            height: 100%; /* 100% Full-height */
+            width: 0; /* 0 width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 10vh;
+            left: 0;
+            background-color: #111; /* Black*/
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 60px; /* Place content 60px from the top */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* The button used to open the sidebar */
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: rgb(25, 25, 25);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            position: fixed;
+            z-index: 2;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        #main {
+           transition: margin-left .5s; /* If you want a transition effect */
+        }
+
+        #results{
+            height: 20vh;
+            width: 90%;
+            border: solid 2px grey;
+            margin-left: 5%;
+            overflow-y: scroll;
+            display: none;
+        }
+
+        .result{
+            width: 80%;
+            margin-left: 10%;
+            background-color: black;
+            color: white;
+            margin-top: 1vh;
+            height: 6vh;
+            overflow-y: hidden;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+           .sidebar {padding-top: 15px;}
+           .sidebar a {font-size: 18px;}
+        }
+    </style>
+</head>
+<body>
+    <div id="dashboard">
+        <button class="openbtn" onclick="openSidebar()" id="openbtn">&#9776;</button>
+        <div id="sidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+
+            <div id="search">
+                <input type="text" placeholder="Search Authors, historys..." id="searchbar" autocomplete="off"><button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+            <div id="results">
+                <!-- Hier werden die Results präsentiert -->
+                <!-- <div class="result"><a href="/users/search/Admin">Admin</a></div> -->
+            </div>
+
+
+
+            <div class="form-group" style="text-align: center; margin-top: 4vh;">
+                <label for="genre"> Genre auswählen: </label><br>
+                <select name="genre" id="genre">
+                  <option value="keine Angabe"></option>
+                  <option value="Action">Action</option>
+                  <option value="Krimi">Krimi</option>
+                  <option value="Romantik">Romantik</option>
+                  <option value="Sci-Fi">Science-Fiction</option>
+                  <option value="Komödie">Komödie</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Kinder">Kinderbuch</option>
+                  <option value="Sachbuch">Sachbuch</option>
+                  <option value="Thriller">Thriller</option>
+                  <option value="Andere">Andere</option>
+                </select>
+                <button onclick="Search()">Auswählen</button>
+              </div>
+              <div style="text-align: center; margin: 2%;">
+                <button><a href="/history/random">Zufällige Geschichte lesen</a></button>
+              </div>
+
+
+        </div>
+
+<div id="main">
+    <h5 style="text-align: center;" id="Heading">Willkommen <%= name %> - Du hast <span style="color: rgb(46, 46, 219);"><%= newMessages.length %></span> neue Nachrichten</h5>
+
+    <div id="feed">
+       
+        <%articlesList.forEach(article => { %>
+            <div class="Feed-Item">
+                <h1 class="ArticleTitle"><%= article.title %></h1><br>
+                <p style="display: flex; justify-content: space-between;"><em>von <a href="/profile/<%= article.author%>"><%= article.author %></a></em><em style="margin-right: 10%">Genre: <%= article.genre%></em></p>
+                <h4>Inhaltswiedergabe:</h4>
+                <main><%= article.summary%></main><br>
+                <a href="/history/<%= article._id%>">Ganze Geschichte lesen</a>
+            </div>
+        <% }) %>
+            
+        <h2 style="transform: scaleY(-1); text-align: center;">Feed</h2>
+    <!-- <a href="/users/logout" class="btn btn-secondary">Logout</a> -->
+    <div id="Suchergebnisse">
+        <% articlesGList.forEach(article => { %>
+            <div class="Feed-Item">
+                <h1 class="ArticleTitle"><%= article.title %></h1><br>
+                <p><em>von <a href="/profile/<%= article.author%>"><%= article.author %></a></em></p><br>
+                <h4>Inhaltswiedergabe:</h4>
+                <main><%= article.summary%></main><br>
+                <a href="/history/<%= article._id%>">Ganze Geschichte lesen</a>
+            </div>
+        <%})%>
+        <%if (articlesGList.length < 1){%>
+            <p style="transform: scaleY(-1); text-align: center;">Keine Geschichten mit diesem Genre gefunden. Versuchen Sie es bald wieder...</p>
+        <%}%>
+        <h3 style="transform: scaleY(-1); text-align: center;">Deine Suchergebnisse:</h3>
+    </div>
+</div>
+        
+       
+</div>
+    <script>
+        const searchBar = document.getElementById("searchbar");
+        const userList = "<%= userList %>"
+        const Users = userList.split(",");
+        const titleList = "<%= titleList %>"
+        const Titles = titleList.split(",");
+
+        //Suchergebnisse auf dem normalen Dashboard nicht anzeigen
+        if (window.location == "http://localhost:5000/dashboard"){
+            document.getElementById("Suchergebnisse").style.display = "none";
+        }
+
+        //Genre suchen
+        function Search(){
+            var genre = document.getElementById("genre").value;
+            //console.log("Test");
+            location.href = "/dashboard/"+genre;
+        }
+        
+        
+
+
+        //Suchleiste die unter anderem Vorschläge macht 
+        searchBar.addEventListener("keyup", (e)=> {
+            document.getElementById("results").innerHTML = "";
+            let fUsers = 0;
+            let fArticles = 0;
+            const searchValue = e.target.value.toUpperCase();
+            //console.log(searchValue)
+            if (searchValue != ""){
+                document.getElementById("results").style.display = "inline-block"
+
+
+                let filteredUsers = Users.filter(user => {
+               // console.log(searchValue);
+                if (user.toUpperCase() == searchValue){
+                   // console.log(user)
+                    document.getElementById("results").innerHTML += "<div class=result> <a href=/profile/"+user+">"+user+"   (Genauer User)</div>"
+                   // filteredUsers.unshift(user);
+                    
+                }else{
+                    return user.toUpperCase().includes(searchValue);
+                }
+             });
+
+                const fUl = filteredUsers.length
+                for (i=4;i < (fUl-1); i++){
+                   filteredUsers.pop()
+                }
+                
+                
+            
+
+                let filteredTitles = Titles.filter(title => {
+                    //console.log(title)
+                    const Titel =  title.substr(24)
+                    const ID = title.substring(0,24)
+                    if (Titel.toUpperCase() == searchValue){
+                        //console.log("Found");
+                        document.getElementById("results").innerHTML += "<div class=result><a href=/history/"+ID+">"+Titel+"  (Genaue Story)</div>"
+                    }else{
+                        return title.toLocaleUpperCase().includes(searchValue);
+                    }
+                    
+                })
+                //console.log(filteredTitles);
+                const fTl = filteredTitles.length;
+                for (i =4; i < (fTl-1); i++){
+                    filteredTitles.pop();
+                }
+                //console.log(filteredTitles.length);
+           
+        
+
+        
+
+
+
+           // console.log(filteredTitles);
+            
+            //console.log(filteredUsers.length)
+
+            if (filteredUsers.length > 0 || filteredTitles.length > 0){
+                filteredUsers.forEach(User => {
+                //console.log(User)
+                document.getElementById("results").innerHTML += "<div class=result> <a href=/profile/"+User+">"+User+"   (User)</div>"
+                })
+                filteredTitles.forEach(Title => {
+                    const ID = Title.substring(0,24)
+                    const titl = Title.substr(24)
+                    //console.log(titl)
+                    document.getElementById("results").innerHTML += "<div class=result><a href=/history/"+ID+">"+titl+"  (Story)</div>"
+                })
+            }else if(document.getElementById("results").innerText == ""){
+                document.getElementById("results").innerHTML = "<span>Kein passender Treffer. Versuchen Sie es erneut</span>"
+            }
+
+            }else{
+               setTimeout(function(){
+                document.getElementById("results").style.display = "none";
+               }, 200)
+            };
+
+
+            //nur 10 Ergebnisse anzeigen
+            
+    }); 
+
+
+
+        function openSidebar(){
+            document.getElementById("sidebar").style.width = "320px";
+            document.getElementById("openbtn").style.zIndex = "0"
+            if (window.screen.availWidth > 700){
+                document.getElementById("main").style.marginLeft = "320px"
+                //console.log(window.screen.availWidth);
+            }
+        }
+
+        function closeSidebar(){
+            document.getElementById("sidebar").style.width = "0px"
+            document.getElementById("main").style.marginLeft = "0px"
+            setTimeout(function(){
+                document.getElementById("openbtn").style.zIndex = "80"
+            },400)
+        }
+    
+        //console.log(userList)
+    </script>
+</body>
+</html>
